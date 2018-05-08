@@ -49,3 +49,7 @@ a.carousel-control-next, a.carousel-control-prev {
     cursor: pointer;
     color: red;
 }
+
+.mb-footer {
+    margin-bottom: 75px !important;
+}

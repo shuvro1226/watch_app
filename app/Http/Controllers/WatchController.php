@@ -53,7 +53,7 @@ class WatchController extends Controller
     public function store(Request $request)
     {
 	    $now = Carbon::now();
-	    $custom_validation_fails = false;
+	    $errors = array();
 
 	    $rules = [
 		    'brand_id' => 'required',
@@ -86,32 +86,28 @@ class WatchController extends Controller
 		    $condition = Condition::where('id', $request->condition_id)->first();
 
 		    if($condition->name === 'Vintage' && $request->price > 50000.00) {
-			    $custom_validation_fails = true;
-			    $errors[] = 'A vintage watch cannot cost more than 50.000,00 Euros';
+			    $validator->errors()->add('condition_id','A vintage watch cannot cost more than 50.000,00 Euros');
 		    }
 		    if($condition->name !== 'Vintage' && $condition->name !== 'AAA' && $request->year && $request->year + 20 < $now->year) {
-			    $custom_validation_fails = true;
-			    $errors[] = 'A watch which is older than 20 years can only be vintage or aaa';
+			    $validator->errors()->add('condition_id','A watch which is older than 20 years can only be vintage or aaa');
 		    }
 		    if($condition->name === 'New' && $request->year && $request->year + 4 < $now->year) {
-			    $custom_validation_fails = true;
-			    $errors[] = 'A new watch cannot be older than 4 years';
-		    }
-		    if(empty($images_array)) {
-			    $custom_validation_fails = true;
-			    $errors[] = 'Please insert at least one image url';
-		    }
-		    if($request->year > $now->year) {
-			    $custom_validation_fails = true;
-			    $errors[] = 'A watch from the future('.$request->year.') can not be added';
+			    $validator->errors()->add('condition_id','A new watch cannot be older than 4 years');
 		    }
 	    }
 
-	    if ($validator->fails()) {
-		    return redirect(route('watches.create'))
-			    ->withErrors($validator)
-			    ->withInput();
-	    } elseif ($custom_validation_fails) {
+	    if(empty($images_array)) {
+		    $validator->errors()->add('images','Please insert at least one image url');
+	    }
+	    if($request->year > $now->year) {
+		    $validator->errors()->add('year','A watch from the future('.$request->year.') can not be added');
+	    }
+
+	    foreach ($validator->errors()->all() as $error) {
+		    $errors[] = $error;
+	    }
+
+	    if ($errors) {
 		    return redirect(route('watches.create'))
 			    ->withErrors($errors)
 			    ->withInput();
@@ -191,7 +187,7 @@ class WatchController extends Controller
     public function update(Request $request, Watch $watch)
     {
 	    $now = Carbon::now();
-	    $custom_validation_fails = false;
+	    $errors = array();
 
 	    $rules = [
 		    'brand_id' => 'required',
@@ -224,32 +220,28 @@ class WatchController extends Controller
 		    $condition = Condition::where('id', $request->condition_id)->first();
 
 		    if($condition->name === 'Vintage' && $request->price > 50000.00) {
-			    $custom_validation_fails = true;
-			    $errors[] = 'A vintage watch cannot cost more than 50.000,00 Euros';
+			    $validator->errors()->add('condition_id','A vintage watch cannot cost more than 50.000,00 Euros');
 		    }
 		    if($condition->name !== 'Vintage' && $condition->name !== 'AAA' && $request->year && $request->year + 20 < $now->year) {
-			    $custom_validation_fails = true;
-			    $errors[] = 'A watch which is older than 20 years can only be vintage or aaa';
+			    $validator->errors()->add('condition_id','A watch which is older than 20 years can only be vintage or aaa');
 		    }
 		    if($condition->name === 'New' && $request->year && $request->year + 4 < $now->year) {
-			    $custom_validation_fails = true;
-			    $errors[] = 'A new watch cannot be older than 4 years';
-		    }
-		    if(empty($images_array)) {
-			    $custom_validation_fails = true;
-			    $errors[] = 'Please insert at least one image url';
-		    }
-		    if($request->year > $now->year) {
-			    $custom_validation_fails = true;
-			    $errors[] = 'A watch from the future('.$request->year.') can not be added';
+			    $validator->errors()->add('condition_id','A new watch cannot be older than 4 years');
 		    }
 	    }
 
-	    if ($validator->fails()) {
-		    return redirect(route('watches.edit', $watch->id))
-			    ->withErrors($validator)
-			    ->withInput();
-	    } elseif ($custom_validation_fails) {
+	    if(empty($images_array)) {
+		    $validator->errors()->add('images','Please insert at least one image url');
+	    }
+	    if($request->year > $now->year) {
+		    $validator->errors()->add('year','A watch from the future('.$request->year.') can not be added');
+	    }
+
+	    foreach ($validator->errors()->all() as $error) {
+	    	$errors[] = $error;
+	    }
+
+	    if ($errors) {
 		    return redirect(route('watches.edit', $watch->id))
 			    ->withErrors($errors)
 			    ->withInput();

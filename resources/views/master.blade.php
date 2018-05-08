@@ -7,7 +7,7 @@
 <header>
     @include('templates.header')
 </header>
-<div class="container mb-5">
+<div class="container mb-footer">
     <div id="main">
         @yield('content')
         @include('templates.modals')
