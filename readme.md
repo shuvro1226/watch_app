@@ -1,4 +1,4 @@
-Steps to run the project -
+##Steps to run the project on your local machine
 
 Clone the project to your local machine
 
