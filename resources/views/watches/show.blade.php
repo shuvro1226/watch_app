@@ -1,6 +1,8 @@
 @extends('master')
 
 @section('content')
+    <h1 class="mt-3"><i class="fas fa-clock"></i> {{$watch->brand->name}} - {{$watch->model}}</h1>
+    <hr>
     <div class="row mt-3">
         <div class="col-6">
             <div id="watch_slider" class="carousel slide" data-ride="carousel">

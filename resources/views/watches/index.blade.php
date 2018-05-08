@@ -4,9 +4,9 @@
      <div class="watch-list-wrapper mt-2">
          <div class="row">
              @foreach($watches as $watch)
-                 <div class="col-3">
+                 <div class="col-4 mb-3">
                      <div class="card border-info">
-                         <div class="card-img-top" style="background-image: url('{{json_decode($watch->images)[0]}}')"></div>
+                         <div class="card-img-top mt-2" style="background-image: url('{{json_decode($watch->images)[0]}}')"></div>
                          <div class="card-body text-info">
                              <a class="card-model-name" href="{{route('watch.urlslug', $watch->url_slug)}}">
                                  <h5 class="card-title">{{$watch->model}}</h5>

@@ -21,7 +21,7 @@ class WatchController extends Controller
      */
     public function index()
     {
-	    $watches = Watch::orderBy('id', 'desc')->paginate(12);
+	    $watches = Watch::orderBy('id', 'desc')->paginate(9);
 		return view('watches.index', ['watches' => $watches]);
     }
 
@@ -85,11 +85,11 @@ class WatchController extends Controller
 	    if($request->condition_id) {
 		    $condition = Condition::where('id', $request->condition_id)->first();
 
-		    if($condition->name === 'Vintage' && $request->price > 50000) {
+		    if($condition->name === 'Vintage' && $request->price > 50000.00) {
 			    $custom_validation_fails = true;
-			    $errors[] = 'A vintage watch cannot cost more than 50000 Euro';
+			    $errors[] = 'A vintage watch cannot cost more than 50.000,00 Euros';
 		    }
-		    if(($condition->name !== 'Vintage' || $condition->name === 'AAA') && $request->year && $request->year + 20 < $now->year) {
+		    if($condition->name !== 'Vintage' && $condition->name !== 'AAA' && $request->year && $request->year + 20 < $now->year) {
 			    $custom_validation_fails = true;
 			    $errors[] = 'A watch which is older than 20 years can only be vintage or aaa';
 		    }
@@ -223,11 +223,11 @@ class WatchController extends Controller
 	    if($request->condition_id) {
 		    $condition = Condition::where('id', $request->condition_id)->first();
 
-		    if($condition->name === 'Vintage' && $request->price > 50000) {
+		    if($condition->name === 'Vintage' && $request->price > 50000.00) {
 			    $custom_validation_fails = true;
-			    $errors[] = 'A vintage watch cannot cost more than 50000 Euro';
+			    $errors[] = 'A vintage watch cannot cost more than 50.000,00 Euros';
 		    }
-		    if(($condition->name !== 'Vintage' || $condition->name === 'AAA') && $request->year && $request->year + 20 < $now->year) {
+		    if($condition->name !== 'Vintage' && $condition->name !== 'AAA' && $request->year && $request->year + 20 < $now->year) {
 			    $custom_validation_fails = true;
 			    $errors[] = 'A watch which is older than 20 years can only be vintage or aaa';
 		    }
